@@ -102,4 +102,68 @@ namespace BBDiese
             return attributes;
         }
     }
+
+    public abstract class BaseTag
+    {
+        protected BaseTag() {}
+
+        public abstract string Process(Token token);
+    }
+
+    public class RootTag:BaseTag
+    {
+        public RootTag() {}
+
+        public override string Process(Token token)
+        {
+            return token.Content;
+        }
+    }
+
+    public class SimpleTag:BaseTag
+    {
+        private string html_tag;
+
+        public SimpleTag(string html_tag) {
+            this.html_tag = html_tag;
+        }
+
+        public override string Process(Token token)
+        {
+            if (token == null) return "";
+            if (token.Tag == null) return "";
+            return "<" + this.html_tag + ">" + token.Content + "</" + this.html_tag + ">";
+        }
+    }
+
+    public class LinkTag:BaseTag
+    {
+        public LinkTag() {}
+
+        public override string Process(Token token)
+        {
+            if (token == null) return "";
+            if (token.Tag == null) return "";
+
+            string content = token.Content.Trim();
+            string src = "";
+
+            /* no content and no src */
+            if (content == "") {
+                if (!token.Tag.Attributes.ContainsKey("src")) {
+                    return "";
+                }
+            }
+            /* no src but content */
+            if (!token.Tag.Attributes.ContainsKey("src")) {
+                src = content;
+            }
+            /* no content but src */
+            else {
+                if (content == "") content = src;
+                src = token.Tag.Attributes["src"];
+            }
+            return "<a href=\"" + src + "\">" + content + "</a>";
+        }
+    }
 }

@@ -107,5 +107,52 @@ namespace BBDiese {
             tokens2.Insert(0, root_token);
             return tokens2;
         }
+
+        public static string ToHtml(string text)
+        {
+            List<Token> tokens = BuildAST(text);
+            Dictionary<string, BaseTag> handlers = new Dictionary<string, BaseTag>();
+            handlers.Add("", new RootTag());
+            handlers.Add("b", new SimpleTag("s"));
+            handlers.Add("i", new SimpleTag("em"));
+            handlers.Add("u", new SimpleTag("u"));
+            handlers.Add("url", new LinkTag());
+            if (tokens.Count > 0) {
+                return ProcessAST(tokens[0], handlers);
+            }
+            return "";
+        }
+
+        private static string ProcessAST(Token token, Dictionary<string, BaseTag> handlers)
+        {
+            if (token == null) return "";
+            if (token.IsProcessed) return "";
+            if (handlers == null) return "";
+            token.IsProcessed = true;
+            StringBuilder content = new StringBuilder();
+            foreach (Token child in token.Children) {
+                if (child.Type == TokenType.Text) {
+                    if (!child.IsProcessed) {
+                        child.IsProcessed = true;
+                        content.Append(child.RawBody);
+                    }
+                }
+                else {
+                    if (!child.IsProcessed) {
+                        if (!child.Tag.IsClosing) {
+                            content.Append(ProcessAST(child, handlers));
+                        }
+                    }
+                }
+            }
+            if (token.Type == TokenType.Tag) {
+                token.Content = content.ToString();
+                string output = handlers[token.Tag.Name].Process(token);
+                return output;
+            }
+            else {
+                return content.ToString();
+            }
+        }
     }
 }
