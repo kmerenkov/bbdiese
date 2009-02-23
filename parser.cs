@@ -39,7 +39,7 @@ namespace BBDiese {
             return text.Substring(open_brace_index, close_brace_index-pos+1);
         }
 
-        public static List<Token> BuildAST(string text)
+        private static List<Token> BuildAST(string text)
         {
             List<Token> tokens = new List<Token>();
             int pos = 0;
