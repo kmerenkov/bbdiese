@@ -5,48 +5,22 @@ using System.Text;
 
 namespace BBDiese
 {
-    public class Tag
+    sealed internal class Tag
     {
-        private string name;
-        private Dictionary<string, string> attributes;
-        private bool closing;
+        public string Name {get; set;}
+        public Dictionary<string, string> Attributes {get; set;}
+        public bool IsClosing {get; set;}
 
-        public string Name
+        public Tag(string name, Dictionary<string, string> attributes, bool is_closing)
         {
-            get {
-                return this.name;
-            }
-            set {
-                this.name = value;
-            }
-        }
-
-        public Dictionary<string, string> Attributes
-        {
-            get {
-                return this.attributes;
-            }
-            set {
-                this.attributes = value;
-            }
-        }
-
-        public bool IsClosing
-        {
-            get {
-                return this.closing;
-            }
-            set {
-                this.closing = value;
-            }
-        }
-
-        public Tag(string name, Dictionary<string, string> attributes, bool closing) {
             this.Name = name;
             this.Attributes = attributes;
-            this.IsClosing = closing;
+            this.IsClosing = is_closing;
         }
+    }
 
+    internal static class TagParser
+    {
         static public Tag Parse(string text)
         {
             /* XXX? atm '/b' => 'b', but '/ b' => '/ b' */
@@ -62,12 +36,10 @@ namespace BBDiese
                 tag_name = text;
             }
             else {
-                if (space_idx < text.Length ) {
-                    tag_name = text.Substring(0, space_idx);
-                    string rest = text.Substring(tag_name.Length);
-                    if (rest.Length > 0) {
-                        attributes = Tag.ParseAttributes(rest);
-                    }
+                tag_name = text.Substring(0, space_idx);
+                string rest = text.Substring(tag_name.Length+1);
+                if (rest.Length > 0) {
+                    attributes = TagParser.ParseAttributes(rest);
                 }
             }
             if ((tag_name.Length > 1) && (tag_name[0] == '/')) {
@@ -109,14 +81,14 @@ namespace BBDiese
         }
     }
 
-    public abstract class BaseTag
+    internal abstract class BaseTag
     {
         protected BaseTag() {}
 
         public abstract string Process(Token token);
     }
 
-    public class RootTag:BaseTag
+    sealed internal class RootTag:BaseTag
     {
         public RootTag() {}
 
@@ -126,7 +98,7 @@ namespace BBDiese
         }
     }
 
-    public class SimpleTag:BaseTag
+    sealed internal class SimpleTag:BaseTag
     {
         private string html_tag;
 
@@ -142,7 +114,7 @@ namespace BBDiese
         }
     }
 
-    public class LinkTag:BaseTag
+    sealed internal class LinkTag:BaseTag
     {
         public LinkTag() {}
 

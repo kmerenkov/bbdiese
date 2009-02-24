@@ -1,4 +1,4 @@
-bbdiese: token.cs parser.cs tag.cs
+bbdiese: token.cs parser.cs tag.cs AssemblyInfo.cs
 	gmcs $? -v -t:library -O:all -out:$@.dll
 
 test: bbdiese

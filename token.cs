@@ -5,12 +5,12 @@ using System.Text;
 
 namespace BBDiese {
     [Serializable]
-    public enum TokenType:int {
+    internal enum TokenType:int {
         Tag = 0,
         Text
     }
 
-    public class Token
+    sealed internal class Token
     {
         public TokenType Type {get; set;}
         public string RawBody {get; set;}
@@ -32,14 +32,5 @@ namespace BBDiese {
 
         public Token(string raw_body, TokenType type):this(raw_body, type, null)
         {}
-
-        public override string ToString()
-        {
-            StringBuilder output = new StringBuilder();
-            output.Append("(" + this.Type + ", ");
-            output.Append("\"" + this.RawBody + "\", ");
-            output.Append("Tag: " + this.Tag + ")");
-            return output.ToString();
-        }
     }
 }

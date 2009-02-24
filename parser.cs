@@ -76,7 +76,7 @@ namespace BBDiese {
                 Token token = new Token(str_token, (token_is_text ? TokenType.Text : TokenType.Tag));
                 pos += str_token.Length;
                 if (token.Type == TokenType.Tag) {
-                    Tag tag = Tag.Parse(token.RawBody);
+                    Tag tag = TagParser.Parse(token.RawBody);
                     token.Tag = tag;
                 }
                 tokens.Add(token);
