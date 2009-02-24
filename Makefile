@@ -1,14 +1,12 @@
-bbdiese: token.cs parser.cs tag.cs AssemblyInfo.cs
-	gmcs $? -v -t:library -O:all -out:$@.dll
-
-test: bbdiese
-	gmcs test.cs -r:bbdiese.dll -t:exe -O:all -v -out:test.exe
+bbdiese: src/token.cs src/parser.cs src/tag.cs src/AssemblyInfo.cs
+	gmcs $? -v -t:library -O:all -out:bin/$@.dll
+	gmcs src/test_application.cs -r:bin/bbdiese.dll -t:exe -O:all -v -out:bin/test.exe
 
 gendarme: bbdiese
 	gendarme --severity all --confidence all --quiet --html $?.dll.html $?.dll
 
 shell: bbdiese
-	csharp -r:$?.dll
+	csharp -r:bin/$?.dll
 
 clean:
-	-rm *.mdb *.dll *.exe *.html
+	-rm bin/*.mdb bin/*.dll bin/*.exe *.html
