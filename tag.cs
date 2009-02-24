@@ -49,29 +49,35 @@ namespace BBDiese
 
         static public Tag Parse(string text)
         {
+            /* XXX? atm '/b' => 'b', but '/ b' => '/ b' */
             if (text == null) {
                 return null;
             }
-            Dictionary<string, string> attributes = new Dictionary<string, string>();
-            string tag = "";
+            Dictionary<string, string> attributes = null;
+            string tag_name = "";
             bool closing = false;
             text = text.Trim(new char[] {'[', ' ', ']'});
             int space_idx = text.IndexOf(" ");
             if (space_idx == -1) {
-                tag = text;
+                tag_name = text;
             }
             else {
-                tag = text.Substring(0, space_idx);
-                string rest = text.Substring(tag.Length).Trim();
-                if (rest.Length > 0) {
-                    attributes = Tag.ParseAttributes(rest);
+                if (space_idx < text.Length ) {
+                    tag_name = text.Substring(0, space_idx);
+                    string rest = text.Substring(tag_name.Length);
+                    if (rest.Length > 0) {
+                        attributes = Tag.ParseAttributes(rest);
+                    }
                 }
             }
-            if (tag.StartsWith("/")) {
-                tag = tag.Substring(1);
+            if ((tag_name.Length > 1) && (tag_name[0] == '/')) {
+                tag_name = tag_name.Substring(1);
                 closing = true;
             }
-            return new Tag(tag, attributes, closing);
+            if (attributes == null) {
+                attributes = new Dictionary<string, string>();
+            }
+            return new Tag(tag_name, attributes, closing);
         }
 
         static public Dictionary<string, string> ParseAttributes(string text)
@@ -82,16 +88,16 @@ namespace BBDiese
             }
             int pos = 0;
             while (true) {
-                int eq_sign = text.IndexOf("=", pos);
+                int eq_sign = text.IndexOf('=', pos);
                 if (eq_sign == -1) {
                     break;
                 }
                 string attr_name = text.Substring(pos, eq_sign-pos);
-                int open_quote = text.IndexOf("\"", eq_sign+1);
+                int open_quote = text.IndexOf('\"', eq_sign+1);
                 if (open_quote == -1) {
                     break;
                 }
-                int close_quote = text.IndexOf("\"", open_quote+1);
+                int close_quote = text.IndexOf('\"', open_quote+1);
                 if (close_quote == -1) {
                     break;
                 }
