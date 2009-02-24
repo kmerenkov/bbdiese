@@ -192,7 +192,7 @@ namespace BBDiese {
                     return output;
                 }
                 return EscapeHtml(token.RawBody) +
-                       token.Content.ToString() +
+                       token.Content +
                        EscapeHtml(token.Pair.RawBody);
             }
             else {
