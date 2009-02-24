@@ -7,6 +7,28 @@ using System.Linq;
 namespace BBDiese {
     public class Parser
     {
+
+        private struct Map
+        {
+            public string Text;
+            public string Replacement;
+        }
+
+        static private List<Map> html_replacement_map = new List<Map> {
+            new Map { Text = "&", Replacement = "&amp;" },
+            new Map { Text = "<", Replacement = "&lt;" },
+            new Map { Text = ">", Replacement = "&gt;" }
+        };
+
+        static public string EscapeHtml(string text)
+        {
+            StringBuilder output = new StringBuilder(text);
+            foreach (Map item in html_replacement_map) {
+                output.Replace(item.Text, item.Replacement);
+            }
+            return output.ToString();
+        }
+
         static private string FindNextToken(string text, int pos)
         {
             if (text == null) {
@@ -134,7 +156,7 @@ namespace BBDiese {
                 if (child.Type == TokenType.Text) {
                     if (!child.IsProcessed) {
                         child.IsProcessed = true;
-                        content.Append(child.RawBody);
+                        content.Append(EscapeHtml(child.RawBody));
                     }
                 }
                 else {

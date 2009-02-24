@@ -149,7 +149,7 @@ namespace BBDiese
             string src = "";
 
             /* no content and no src */
-            if (content == "") {
+            if (content.Length == 0) {
                 if (!token.Tag.Attributes.ContainsKey("src")) {
                     return "";
                 }
@@ -160,7 +160,7 @@ namespace BBDiese
             }
             /* no content but src */
             else {
-                if (content == "") content = src;
+                if (content.Length == 0) content = src;
                 src = token.Tag.Attributes["src"];
             }
             return "<a href=\"" + src + "\">" + content + "</a>";
