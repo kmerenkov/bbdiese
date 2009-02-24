@@ -5,7 +5,7 @@ using System.Linq;
 
 
 namespace BBDiese {
-    public class Parser
+    public static class Parser
     {
 
         private struct Map

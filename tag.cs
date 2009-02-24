@@ -122,7 +122,7 @@ namespace BBDiese
 
         public override string Process(Token token)
         {
-            return token.Content;
+            return token == null ? "" : token.Content;
         }
     }
 
