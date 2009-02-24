@@ -17,6 +17,7 @@ namespace BBDiese {
         public string Content {get; set;}
         public Tag Tag {get; set;}
         /* AST-related fields */
+        public Token Pair {get;set;} /* i.e. closing token */
         public bool IsProcessed {get; set;}
         public Token Parent {get; set;}
         public List<Token> Children {get; set;}

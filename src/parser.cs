@@ -115,6 +115,7 @@ namespace BBDiese {
                             tokens[x].Parent = tokens[j];
                             tokens[j].Children.Add(tokens[x]);
                         }
+                        tokens[j].Pair = tokens[i];
                         open_tags.RemoveAt(open_tag_idx);
                         open_tags_idxs.RemoveAt(open_tag_idx);
                     }
@@ -186,8 +187,13 @@ namespace BBDiese {
             }
             if (token.Type == TokenType.Tag) {
                 token.Content = content.ToString();
-                string output = handlers[token.Tag.Name].Process(token);
-                return output;
+                if (handlers.ContainsKey(token.Tag.Name)) {
+                    string output = handlers[token.Tag.Name].Process(token);
+                    return output;
+                }
+                return EscapeHtml(token.RawBody) +
+                       token.Content.ToString() +
+                       EscapeHtml(token.Pair.RawBody);
             }
             else {
                 return content.ToString();
