@@ -84,9 +84,8 @@ namespace BBDiese {
             return tokens;
         }
 
-        private static Token BuildAST(string text)
+        private static Token BuildAST(List<Token> tokens)
         {
-            List<Token> tokens = Tokenize(text);
             /* filter unmatching tags */
             /* XXX I bet that the following code is suboptimal! */
             /* Find all tags that close before their open, or open w/o closing in the end,
@@ -149,7 +148,7 @@ namespace BBDiese {
         {
             if (text == null) return "";
             if (text.Length == 0) return "";
-            Token root = BuildAST(text);
+            Token root = BuildAST(Tokenize(text));
             Dictionary<string, BaseTag> handlers = new Dictionary<string, BaseTag>();
             handlers.Add("", new RootTag());
             handlers.Add("b", new SimpleTag("s"));
