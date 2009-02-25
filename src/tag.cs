@@ -6,11 +6,12 @@ using System.Text.RegularExpressions;
 
 namespace BBDiese
 {
-    sealed internal class Tag
+    public class Tag
     {
         public string Name {get; set;}
         public Dictionary<string, string> Attributes {get; set;}
         public bool IsClosing {get; set;}
+        public string Content {get;set;}
 
         public Tag(string name, Dictionary<string, string> attributes, bool is_closing)
         {
@@ -73,84 +74,6 @@ namespace BBDiese
                 attributes.Add(key, value);
             }
             return attributes;
-        }
-    }
-
-    internal abstract class BaseTag
-    {
-        protected BaseTag() {}
-
-        public abstract string Process(Token token);
-    }
-
-    sealed internal class RootTag:BaseTag
-    {
-        public RootTag() {}
-
-        public override string Process(Token token)
-        {
-            return token == null ? "" : token.Content;
-        }
-    }
-
-    sealed internal class SimpleTag:BaseTag
-    {
-        private string html_tag;
-
-        public SimpleTag(string html_tag) {
-            this.html_tag = html_tag;
-        }
-
-        public override string Process(Token token)
-        {
-            if (token == null) return "";
-            if (token.Tag == null) return "";
-            return "<" + this.html_tag + ">" + token.Content + "</" + this.html_tag + ">";
-        }
-    }
-
-    sealed internal class LinkTag:BaseTag
-    {
-        public LinkTag() {}
-
-        public override string Process(Token token)
-        {
-            if (token == null) return "";
-            if (token.Tag == null) return "";
-
-            string content = token.Content.Trim();
-            string src = "";
-
-            /* no content and no src */
-            if (content.Length == 0) {
-                if (!token.Tag.Attributes.ContainsKey("src")) {
-                    return "";
-                }
-            }
-            /* no src but content */
-            if (!token.Tag.Attributes.ContainsKey("src")) {
-                src = content;
-            }
-            /* no content but src */
-            else {
-                if (content.Length == 0) content = src;
-                src = token.Tag.Attributes["src"];
-            }
-            return "<a href=\"" + src + "\">" + content + "</a>";
-        }
-    }
-
-    sealed internal class ImageTag:BaseTag
-    {
-        public ImageTag() {}
-
-        public override string Process(Token token)
-        {
-            if (token == null) return "";
-            if (token.Tag == null) return "";
-
-            string src = token.Content.Trim();
-            return "<img src=\"" + src + "\"/>";
         }
     }
 }

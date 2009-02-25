@@ -153,22 +153,34 @@ namespace BBDiese {
 
         public static string ToHtml(string text)
         {
+            return ToHtml(text, null);
+        }
+
+        public static string ToHtml(string text, Dictionary<string, BaseTagHandler> handlers)
+        {
             if (text == null) return "";
             if (text.Length == 0) return "";
             Token root = BuildAST(Tokenize(text));
             /* register tags handlers */
-            Dictionary<string, BaseTag> handlers = new Dictionary<string, BaseTag>();
-            handlers.Add("", new RootTag());
-            handlers.Add("b", new SimpleTag("s"));
-            handlers.Add("i", new SimpleTag("em"));
-            handlers.Add("u", new SimpleTag("u"));
-            handlers.Add("url", new LinkTag());
-            handlers.Add("img", new ImageTag());
-            string processing_result = ProcessAST(root, handlers);
-            return processing_result == null ? "" : processing_result;
+            if (handlers == null) {
+                handlers = new Dictionary<string, BaseTagHandler>();
+                handlers.Add("", new RootTag());
+                handlers.Add("b", new SimpleTag("s"));
+                handlers.Add("i", new SimpleTag("em"));
+                handlers.Add("u", new SimpleTag("u"));
+                handlers.Add("url", new LinkTag());
+                handlers.Add("img", new ImageTag());
+            }
+            if (handlers.Keys.Count > 0) {
+                string processing_result = ProcessAST(root, handlers);
+                return processing_result == null ? "" : processing_result;
+            }
+            else {
+                return EscapeHtml(text);
+            }
         }
 
-        private static string ProcessAST(Token token, Dictionary<string, BaseTag> handlers)
+        private static string ProcessAST(Token token, Dictionary<string, BaseTagHandler> handlers)
         {
             if ((token == null) || token.IsProcessed || (handlers == null)) {
                 return null;
@@ -194,13 +206,13 @@ namespace BBDiese {
                 }
             }
             if (token.Type == TokenType.Tag) {
-                token.Content = content.ToString();
+                token.Tag.Content = content.ToString();
                 if (handlers.ContainsKey(token.Tag.Name)) {
-                    string output = handlers[token.Tag.Name].Process(token);
+                    string output = handlers[token.Tag.Name].Process(token.Tag);
                     return output;
                 }
                 return EscapeHtml(token.RawBody) +
-                       token.Content +
+                       token.Tag.Content +
                        EscapeHtml(token.Pair.RawBody);
             }
             else {
