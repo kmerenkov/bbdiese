@@ -64,7 +64,7 @@ namespace BBDiese
                 if (eq_sign == -1) {
                     break;
                 }
-                string attr_name = text.Substring(pos, eq_sign-pos);
+                string attr_name = text.Substring(pos, eq_sign-pos).Trim();
                 int open_quote = text.IndexOf('\"', eq_sign+1);
                 if (open_quote == -1) {
                     break;
