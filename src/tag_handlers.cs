@@ -48,10 +48,8 @@ namespace BBDiese
             string src = "";
 
             /* no content and no src */
-            if (content.Length == 0) {
-                if (!tag.Attributes.ContainsKey("src")) {
-                    return "";
-                }
+            if ((content.Length == 0) && (!tag.Attributes.ContainsKey("src"))) {
+                return "";
             }
             /* no src but content */
             if (!tag.Attributes.ContainsKey("src")) {
@@ -59,8 +57,10 @@ namespace BBDiese
             }
             /* no content but src */
             else {
-                if (content.Length == 0) content = src;
                 src = tag.Attributes["src"];
+                if (content.Length == 0) {
+                    content = src;
+                }
             }
             src = HttpUtility.UrlPathEncode(src);
             return "<a href=\"" + src + "\">" + content + "</a>";

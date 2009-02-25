@@ -49,5 +49,57 @@ namespace BBDiese
                                           });
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void test_002()
+        {
+            LinkTag lt = new LinkTag();
+            string bbcode = "[url src=http://some%20url]Click me[/url]";
+            string expected = "<a href=\"http://some%20url\">Click me</a>";
+            string actual = Parser.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"url", lt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_003()
+        {
+            LinkTag lt = new LinkTag();
+            string bbcode = "[url src=\"http://some url\"]Click me[/url]";
+            string expected = "<a href=\"http://some%20url\">Click me</a>";
+            string actual = Parser.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"url", lt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_004()
+        {
+            LinkTag lt = new LinkTag();
+            string bbcode = "[url src=\"http://some.url\" xxx=yyy]Click me[/url]";
+            string expected = "<a href=\"http://some.url\">Click me</a>";
+            string actual = Parser.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"url", lt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_005()
+        {
+            LinkTag lt = new LinkTag();
+            string bbcode = "[url src=somewhere][/url]";
+            string expected = "<a href=\"somewhere\">somewhere</a>";
+            string actual = Parser.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"url", lt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
