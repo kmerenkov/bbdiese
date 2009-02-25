@@ -144,4 +144,18 @@ namespace BBDiese
             return "<a href=\"" + src + "\">" + content + "</a>";
         }
     }
+
+    sealed internal class ImageTag:BaseTag
+    {
+        public ImageTag() {}
+
+        public override string Process(Token token)
+        {
+            if (token == null) return "";
+            if (token.Tag == null) return "";
+
+            string src = token.Content.Trim();
+            return "<img src=\"" + src + "\"/>";
+        }
+    }
 }

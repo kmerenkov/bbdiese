@@ -113,5 +113,32 @@ namespace BBDiese
             string actual = Parser.ToHtml(bbcode);
             Assert.AreEqual(actual, expected);
         }
+
+        [Test]
+        public void test_013()
+        {
+            string bbcode = "[img]http://foobar[/img]";
+            string expected = "<img src=\"http://foobar\"/>";
+            string actual = Parser.ToHtml(bbcode);
+            Assert.AreEqual(actual, expected);
+        }
+
+        [Test]
+        public void test_014()
+        {
+            string bbcode = "[img]  http://foobar    [/img]";
+            string expected = "<img src=\"http://foobar\"/>";
+            string actual = Parser.ToHtml(bbcode);
+            Assert.AreEqual(actual, expected);
+        }
+
+        [Test]
+        public void test_015()
+        {
+            string bbcode = "[img][/img]";
+            string expected = "<img src=\"\"/>";
+            string actual = Parser.ToHtml(bbcode);
+            Assert.AreEqual(actual, expected);
+        }
     }
 }

@@ -155,6 +155,7 @@ namespace BBDiese {
             handlers.Add("i", new SimpleTag("em"));
             handlers.Add("u", new SimpleTag("u"));
             handlers.Add("url", new LinkTag());
+            handlers.Add("img", new ImageTag());
             string processing_result = ProcessAST(root, handlers);
             return processing_result == null ? "" : processing_result;
         }
