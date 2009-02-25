@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 
 namespace BBDiese
@@ -21,6 +22,11 @@ namespace BBDiese
 
     internal static class TagParser
     {
+        private static char[] bad_attr_chars = new char[] {'"', ' ', '"'};
+        private static Regex re_attr = new Regex(@"(?<nv>(?<n>[^=]*)\s*=\s*(?<v>[^\ ]*)[\ ]?)*",
+                                                 RegexOptions.ExplicitCapture |
+                                                   RegexOptions.Compiled);
+
         static public Tag Parse(string text)
         {
             /* XXX? atm '/b' => 'b', but '/ b' => '/ b' */
@@ -58,24 +64,12 @@ namespace BBDiese
             if (text == null) {
                 return attributes;
             }
-            int pos = 0;
-            while (true) {
-                int eq_sign = text.IndexOf('=', pos);
-                if (eq_sign == -1) {
-                    break;
-                }
-                string attr_name = text.Substring(pos, eq_sign-pos).Trim();
-                int open_quote = text.IndexOf('\"', eq_sign+1);
-                if (open_quote == -1) {
-                    break;
-                }
-                int close_quote = text.IndexOf('\"', open_quote+1);
-                if (close_quote == -1) {
-                    break;
-                }
-                string attr_value = text.Substring(open_quote+1, close_quote-open_quote-pos-1);
-                attributes.Add(attr_name, attr_value);
-                pos = close_quote+1;
+            /* dirtiness */
+            Match m = re_attr.Match(text);
+            for (int i = 0; i < m.Groups["nv"].Captures.Count; i++) {
+                string key = m.Groups["n"].Captures[i].Value.Trim(bad_attr_chars).ToLower();
+                string value = m.Groups["v"].Captures[i].Value.Trim(bad_attr_chars).ToLower();
+                attributes.Add(key, value);
             }
             return attributes;
         }

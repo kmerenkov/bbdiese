@@ -149,5 +149,14 @@ namespace BBDiese
             string actual = Parser.ToHtml(bbcode);
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void test_017()
+        {
+            string bbcode = "[url src=foo]bar[/url]";
+            string expected = "<a href=\"foo\">bar</a>";
+            string actual = Parser.ToHtml(bbcode);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
