@@ -55,6 +55,13 @@ namespace BBDiese {
             if (close_brace_index == -1) {
                 return text.Substring(open_brace_index, text.Length-pos);
             }
+            /* if somebody set up a trap for us, such as "[foo[b]bar[/b]" */
+            int sanity_check_open_brace_index = text.IndexOf('[', open_brace_index+1, close_brace_index-pos);
+            if (sanity_check_open_brace_index != -1) {
+                /* return "[foo" part of "[foo[b]bar[/b]" */
+                return text.Substring(open_brace_index, sanity_check_open_brace_index-open_brace_index);
+            }
+            /* all green, go on */
             return text.Substring(open_brace_index, close_brace_index-pos+1);
         }
 
