@@ -23,7 +23,8 @@ namespace BBDiese
     internal static class TagParser
     {
         private static char[] bad_attr_chars = new char[] {'"', ' ', '"'};
-        private static Regex re_attr = new Regex(@"(?<nv>(?<n>[^=]*)\s*=\s*(?<v>[^\ ]*)[\ ]?)*",
+        private static char[] bad_tag_chars = new char[] {'[', ' ', ']'};
+        private static Regex re_attr = new Regex(@"(?<n>[^=]*)\s*=\s*(?<v>[^\ ]*)[\ ]?",
                                                  RegexOptions.ExplicitCapture |
                                                    RegexOptions.Compiled);
 
@@ -36,7 +37,7 @@ namespace BBDiese
             Dictionary<string, string> attributes = null;
             string tag_name = "";
             bool closing = false;
-            text = text.Trim(new char[] {'[', ' ', ']'});
+            text = text.Trim(bad_tag_chars);
             int space_idx = text.IndexOf(" ");
             if (space_idx == -1) {
                 tag_name = text;
@@ -66,7 +67,7 @@ namespace BBDiese
             }
             /* dirtiness */
             Match m = re_attr.Match(text);
-            for (int i = 0; i < m.Groups["nv"].Captures.Count; i++) {
+            for (int i = 0; i < m.Groups["n"].Captures.Count; i++) {
                 string key = m.Groups["n"].Captures[i].Value.Trim(bad_attr_chars).ToLower();
                 string value = m.Groups["v"].Captures[i].Value.Trim(bad_attr_chars).ToLower();
                 attributes.Add(key, value);

@@ -149,6 +149,7 @@ namespace BBDiese {
             if (text == null) return "";
             if (text.Length == 0) return "";
             Token root = BuildAST(Tokenize(text));
+            /* register tags handlers */
             Dictionary<string, BaseTag> handlers = new Dictionary<string, BaseTag>();
             handlers.Add("", new RootTag());
             handlers.Add("b", new SimpleTag("s"));
