@@ -8,7 +8,7 @@ namespace BBDiese
     public class SimpleTagTests
     {
         [Test]
-        public void test_001()
+        public void test_normal()
         {
             SimpleTag st = new SimpleTag("s");
             string bbcode = "[b]foo[/b]";
@@ -21,7 +21,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_002()
+        public void test_normal2()
         {
             SimpleTag st = new SimpleTag("x");
             string bbcode = "[z]foo[/z]";
@@ -38,7 +38,7 @@ namespace BBDiese
     public class LinkTagTests
     {
         [Test]
-        public void test_001()
+        public void test_normal()
         {
             LinkTag lt = new LinkTag();
             string bbcode = "[url]http://click me[/url]";
@@ -51,20 +51,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_002()
-        {
-            LinkTag lt = new LinkTag();
-            string bbcode = "[url src=http://some%20url]Click me[/url]";
-            string expected = "<a href=\"http://some%20url\">Click me</a>";
-            string actual = Parser.ToHtml(bbcode,
-                                          new Dictionary<string, BaseTagHandler> {
-                                              {"url", lt}
-                                          });
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void test_003()
+        public void test_space_in_src_value()
         {
             LinkTag lt = new LinkTag();
             string bbcode = "[url src=\"http://some url\"]Click me[/url]";
@@ -77,7 +64,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_004()
+        public void test_redundant_attribute()
         {
             LinkTag lt = new LinkTag();
             string bbcode = "[url src=\"http://some.url\" xxx=yyy]Click me[/url]";
@@ -90,7 +77,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_005()
+        public void test_empty_body()
         {
             LinkTag lt = new LinkTag();
             string bbcode = "[url src=somewhere][/url]";
@@ -101,5 +88,50 @@ namespace BBDiese
                                           });
             Assert.AreEqual(expected, actual);
         }
+    }
+
+    [TestFixture]
+    public class ImageTagTests
+    {
+        [Test]
+        public void test_normal()
+        {
+            ImageTag it = new ImageTag();
+            string bbcode = "[img]http://some.url[/img]";
+            string expected = "<img src=\"http://some.url\">";
+            string actual = Parser.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"img", it}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_empty_body()
+        {
+            ImageTag it = new ImageTag();
+            string bbcode = "[img][/img]";
+            string expected = "";
+            string actual = Parser.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"img", it}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_body_with_whitespaces_around()
+        {
+            ImageTag it = new ImageTag();
+            string bbcode = "[img]  http://foobar    [/img]";
+            string expected = "<img src=\"http://foobar\">";
+            string actual = Parser.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"img", it}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+
     }
 }

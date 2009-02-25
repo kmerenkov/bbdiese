@@ -7,7 +7,7 @@ namespace BBDiese
     public class ToHtmlTest
     {
         [Test]
-        public void test_001()
+        public void test_no_tags()
         {
             string bbcode = "foo";
             string expected = "foo";
@@ -16,7 +16,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_002()
+        public void test_one_tag()
         {
             string bbcode = "[b]foo[/b]";
             string expected = "<s>foo</s>";
@@ -25,7 +25,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_003()
+        public void test_one_tag_with_text_around()
         {
             string bbcode = "foo[b]bar[/b]zar";
             string expected = "foo<s>bar</s>zar";
@@ -34,7 +34,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_004()
+        public void test_unclosed_tag()
         {
             string bbcode = "foo[b]bar";
             string expected = "foo[b]bar";
@@ -43,25 +43,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_005()
-        {
-            string bbcode = "[url]foo[/url]";
-            string expected = "<a href=\"foo\">foo</a>";
-            string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void test_006()
-        {
-            string bbcode = "[url src=\"foo\"]bar[/url]";
-            string expected = "<a href=\"foo\">bar</a>";
-            string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void test_007()
+        public void test_html_in_text()
         {
             string bbcode = "<b>or&z</b>";
             string expected = "&lt;b&gt;or&amp;z&lt;/b&gt;";
@@ -70,7 +52,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_008()
+        public void test_overlapping_tags()
         {
             string bbcode = "[b]foo[i]bar[/b]zar[/i]";
             string expected = "<s>foo<em>barzar</em></s>";
@@ -79,7 +61,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_009()
+        public void test_null_bbcode()
         {
             string bbcode = null;
             string expected = "";
@@ -88,7 +70,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_010()
+        public void test_empty_bbcode()
         {
             string bbcode = "";
             string expected = "";
@@ -97,7 +79,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_011()
+        public void test_whitespace_bbcode()
         {
             string bbcode = "   ";
             string expected = "   ";
@@ -106,7 +88,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_012()
+        public void test_tag_with_whitespaces_around()
         {
             string bbcode = "   [b]aaa[/b]  ";
             string expected = "   <s>aaa</s>  ";
@@ -115,34 +97,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_013()
-        {
-            string bbcode = "[img]http://foobar[/img]";
-            string expected = "<img src=\"http://foobar\"/>";
-            string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void test_014()
-        {
-            string bbcode = "[img]  http://foobar    [/img]";
-            string expected = "<img src=\"http://foobar\"/>";
-            string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void test_015()
-        {
-            string bbcode = "[img][/img]";
-            string expected = "<img src=\"\"/>";
-            string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void test_016()
+        public void test_attribute_with_spaces_around_equal_sign()
         {
             string bbcode = "[url src = \"foo\"]bar[/url]";
             string expected = "<a href=\"foo\">bar</a>";
@@ -151,7 +106,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_017()
+        public void test_unquoted_attribute()
         {
             string bbcode = "[url src=foo]bar[/url]";
             string expected = "<a href=\"foo\">bar</a>";
@@ -160,7 +115,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_018()
+        public void test_opening_brace()
         {
             string bbcode = "[foo[b]bar[/b]";
             string expected = "[foo<s>bar</s>";
@@ -169,7 +124,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_019()
+        public void test_closing_brace()
         {
             string bbcode = "f]oo[b]bar[/b]";
             string expected = "f]oo<s>bar</s>";
@@ -178,7 +133,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_020()
+        public void test_attribute_without_value()
         {
             string bbcode = "[url src]bar[/url]";
             string expected = "<a href=\"bar\">bar</a>";
@@ -187,7 +142,7 @@ namespace BBDiese
         }
 
         [Test]
-        public void test_021()
+        public void test_stress_braces()
         {
             string bbcode = "[[[[[[b]foo[/b]]]]]]";
             string expected = "[[[[[<s>foo</s>]]]]]";
