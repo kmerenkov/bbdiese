@@ -76,7 +76,7 @@ namespace BBDiese
             if (tag == null) return "";
 
             string src = HttpUtility.UrlPathEncode( tag.Content.Trim() );
-            return "<img src=\"" + src + "\"/>";
+            return "<img src=\"" + src + "\">";
         }
     }
 }
