@@ -99,8 +99,17 @@ namespace BBDiese
         [Test]
         public void test_011()
         {
+            string bbcode = "   ";
+            string expected = "   ";
+            string actual = Parser.ToHtml(bbcode);
+            Assert.AreEqual(actual, expected);
+        }
+
+        [Test]
+        public void test_012()
+        {
             string bbcode = "   [b]aaa[/b]  ";
-            string expected = "  <s>aaa</s>  ";
+            string expected = "   <s>aaa</s>  ";
             string actual = Parser.ToHtml(bbcode);
             Assert.AreEqual(actual, expected);
         }
