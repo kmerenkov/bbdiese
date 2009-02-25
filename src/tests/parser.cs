@@ -12,7 +12,7 @@ namespace BBDiese
             string bbcode = "foo";
             string expected = "foo";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -21,7 +21,7 @@ namespace BBDiese
             string bbcode = "[b]foo[/b]";
             string expected = "<s>foo</s>";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace BBDiese
             string bbcode = "foo[b]bar[/b]zar";
             string expected = "foo<s>bar</s>zar";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace BBDiese
             string bbcode = "foo[b]bar";
             string expected = "foo[b]bar";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace BBDiese
             string bbcode = "[url]foo[/url]";
             string expected = "<a href=\"foo\">foo</a>";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace BBDiese
             string bbcode = "[url src=\"foo\"]bar[/url]";
             string expected = "<a href=\"foo\">bar</a>";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace BBDiese
             string bbcode = "<b>or&z</b>";
             string expected = "&lt;b&gt;or&amp;z&lt;/b&gt;";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace BBDiese
             string bbcode = "[b]foo[i]bar[/b]zar[/i]";
             string expected = "<s>foo<em>barzar</em></s>";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace BBDiese
             string bbcode = null;
             string expected = "";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace BBDiese
             string bbcode = "";
             string expected = "";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace BBDiese
             string bbcode = "   ";
             string expected = "   ";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace BBDiese
             string bbcode = "   [b]aaa[/b]  ";
             string expected = "   <s>aaa</s>  ";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -120,7 +120,7 @@ namespace BBDiese
             string bbcode = "[img]http://foobar[/img]";
             string expected = "<img src=\"http://foobar\"/>";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace BBDiese
             string bbcode = "[img]  http://foobar    [/img]";
             string expected = "<img src=\"http://foobar\"/>";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -138,7 +138,16 @@ namespace BBDiese
             string bbcode = "[img][/img]";
             string expected = "<img src=\"\"/>";
             string actual = Parser.ToHtml(bbcode);
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_016()
+        {
+            string bbcode = "[url src = \"foo\"]bar[/url]";
+            string expected = "<a href=\"foo\">bar</a>";
+            string actual = Parser.ToHtml(bbcode);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
