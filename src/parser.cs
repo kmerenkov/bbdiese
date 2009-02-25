@@ -160,18 +160,27 @@ namespace BBDiese {
         {
             if (text == null) return "";
             if (text.Length == 0) return "";
-            Token root = BuildAST(Tokenize(text));
             /* register tags handlers */
             if (handlers == null) {
-                handlers = new Dictionary<string, BaseTagHandler>();
-                handlers.Add("", new RootTag());
-                handlers.Add("b", new SimpleTag("s"));
-                handlers.Add("i", new SimpleTag("em"));
-                handlers.Add("u", new SimpleTag("u"));
-                handlers.Add("url", new LinkTag());
-                handlers.Add("img", new ImageTag());
+                handlers = new Dictionary<string, BaseTagHandler> {
+                    {"", new RootTag()},
+                    {"b", new SimpleTag("s")},
+                    {"i", new SimpleTag("em")},
+                    {"u", new SimpleTag("u")},
+                    {"url", new LinkTag()},
+                    {"img", new ImageTag()}
+                };
+            }
+            else {
+                if (handlers.ContainsKey("")) {
+                    handlers[""] = new RootTag();
+                }
+                else {
+                    handlers.Add("", new RootTag());
+                }
             }
             if (handlers.Keys.Count > 0) {
+                Token root = BuildAST(Tokenize(text));
                 string processing_result = ProcessAST(root, handlers);
                 return processing_result == null ? "" : processing_result;
             }

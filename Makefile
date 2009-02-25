@@ -3,7 +3,7 @@ bbdiese: src/token.cs src/parser.cs src/tag.cs src/tag_handlers.cs src/AssemblyI
 	gmcs src/test_application.cs -r:bin/bbdiese.dll -t:exe -O:all -v -out:bin/test.exe
 
 # I suck at writing Makefiles
-test: src/AssemblyInfo.cs src/tests/parser.cs
+test: src/AssemblyInfo.cs src/tests/parser.cs src/tests/tag_handlers.cs
 	gmcs $? -v -t:library -O:all -r:nunit.framework.dll,bin/bbdiese.dll -out:bin/bbdiese_tests.dll
 
 gendarme: bbdiese
