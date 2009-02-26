@@ -23,6 +23,7 @@ namespace BBDiese
                     {"i", new SimpleTag("em")},
                     {"u", new SimpleTag("u")},
                     {"code", new SimpleTag("pre")},
+                    {"quote", new SimpleTag("blockquote", new SimpleTag("p"))},
                     {"url", new LinkTag()},
                     {"img", new ImageTag()}
                 };

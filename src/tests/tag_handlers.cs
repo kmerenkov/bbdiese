@@ -32,6 +32,19 @@ namespace BBDiese
                                           });
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void test_nested()
+        {
+            SimpleTag st = new SimpleTag("x", new SimpleTag("y"));
+            string bbcode = "[z]foo[/z]";
+            string expected = "<x><y>foo</y></x>";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"z", st}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
     }
 
     [TestFixture]

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Web; /* HttpUtility */
 
 
@@ -24,15 +25,25 @@ namespace BBDiese
     public class SimpleTag:BaseTagHandler
     {
         private string html_tag;
+        private BaseTagHandler nested_tag;
 
-        public SimpleTag(string html_tag) {
+        public SimpleTag(string html_tag):this(html_tag, null)
+        {}
+
+        public SimpleTag(string html_tag, BaseTagHandler nested_tag) {
             this.html_tag = html_tag;
+            this.nested_tag = nested_tag;
         }
 
         public override string Process(Tag tag)
         {
             if (tag == null) return "";
-            return "<" + this.html_tag + ">" + tag.Content + "</" + this.html_tag + ">";
+            if (this.nested_tag != null) {
+                return "<" + this.html_tag + ">" + this.nested_tag.Process(tag) + "</" + this.html_tag + ">";
+            }
+            else {
+                return "<" + this.html_tag + ">" + tag.Content + "</" + this.html_tag + ">";
+            }
         }
     }
 
