@@ -13,7 +13,7 @@ namespace BBDiese
             SimpleTag st = new SimpleTag("s");
             string bbcode = "[b]foo[/b]";
             string expected = "<s>foo</s>";
-            string actual = Parser.ToHtml(bbcode,
+            string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"b", st}
                                           });
@@ -26,7 +26,7 @@ namespace BBDiese
             SimpleTag st = new SimpleTag("x");
             string bbcode = "[z]foo[/z]";
             string expected = "<x>foo</x>";
-            string actual = Parser.ToHtml(bbcode,
+            string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"z", st}
                                           });
@@ -43,7 +43,7 @@ namespace BBDiese
             LinkTag lt = new LinkTag();
             string bbcode = "[url]http://click me[/url]";
             string expected = "<a href=\"http://click%20me\">http://click me</a>";
-            string actual = Parser.ToHtml(bbcode,
+            string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"url", lt}
                                           });
@@ -56,7 +56,7 @@ namespace BBDiese
             LinkTag lt = new LinkTag();
             string bbcode = "[url src=\"http://some url\"]Click me[/url]";
             string expected = "<a href=\"http://some%20url\">Click me</a>";
-            string actual = Parser.ToHtml(bbcode,
+            string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"url", lt}
                                           });
@@ -69,7 +69,7 @@ namespace BBDiese
             LinkTag lt = new LinkTag();
             string bbcode = "[url src=\"http://some.url\" xxx=yyy]Click me[/url]";
             string expected = "<a href=\"http://some.url\">Click me</a>";
-            string actual = Parser.ToHtml(bbcode,
+            string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"url", lt}
                                           });
@@ -82,7 +82,7 @@ namespace BBDiese
             LinkTag lt = new LinkTag();
             string bbcode = "[url src=somewhere][/url]";
             string expected = "<a href=\"somewhere\">somewhere</a>";
-            string actual = Parser.ToHtml(bbcode,
+            string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"url", lt}
                                           });
@@ -99,7 +99,7 @@ namespace BBDiese
             ImageTag it = new ImageTag();
             string bbcode = "[img]http://some.url[/img]";
             string expected = "<img src=\"http://some.url\">";
-            string actual = Parser.ToHtml(bbcode,
+            string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"img", it}
                                           });
@@ -112,7 +112,7 @@ namespace BBDiese
             ImageTag it = new ImageTag();
             string bbcode = "[img][/img]";
             string expected = "";
-            string actual = Parser.ToHtml(bbcode,
+            string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"img", it}
                                           });
@@ -125,7 +125,7 @@ namespace BBDiese
             ImageTag it = new ImageTag();
             string bbcode = "[img]  http://foobar    [/img]";
             string expected = "<img src=\"http://foobar\">";
-            string actual = Parser.ToHtml(bbcode,
+            string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"img", it}
                                           });

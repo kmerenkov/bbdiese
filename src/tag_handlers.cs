@@ -1,4 +1,4 @@
-using System.Web;
+using System.Web; /* HttpUtility */
 
 
 namespace BBDiese
@@ -11,7 +11,7 @@ namespace BBDiese
         public abstract string Process(Tag tag);
     }
 
-    public class RootTag:BaseTagHandler
+    sealed internal class RootTag:BaseTagHandler
     {
         public RootTag() {}
 

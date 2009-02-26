@@ -5,30 +5,8 @@ using System.Linq;
 
 
 namespace BBDiese {
-    public static class Parser
+    internal static class BBParser
     {
-
-        private struct Map
-        {
-            public string Text;
-            public string Replacement;
-        }
-
-        static private List<Map> html_replacement_map = new List<Map> {
-            new Map { Text = "&", Replacement = "&amp;" },
-            new Map { Text = "<", Replacement = "&lt;" },
-            new Map { Text = ">", Replacement = "&gt;" }
-        };
-
-        static public string EscapeHtml(string text)
-        {
-            StringBuilder output = new StringBuilder(text);
-            foreach (Map item in html_replacement_map) {
-                output.Replace(item.Text, item.Replacement);
-            }
-            return output.ToString();
-        }
-
         static private string FindNextToken(string text, int pos)
         {
             if (pos == text.Length) {
@@ -65,7 +43,7 @@ namespace BBDiese {
             return text.Substring(open_brace_index, close_brace_index-pos+1);
         }
 
-        private static List<Token> Tokenize(string text)
+        public static List<Token> Tokenize(string text)
         {
             List<Token> tokens = new List<Token>();
             int pos = 0;
@@ -91,7 +69,7 @@ namespace BBDiese {
             return tokens;
         }
 
-        private static Token BuildAST(List<Token> tokens)
+        public static Token BuildAST(List<Token> tokens)
         {
             /* filter unmatching tags */
             /* XXX I bet that the following code is suboptimal! */
@@ -151,45 +129,8 @@ namespace BBDiese {
             return root_token;
         }
 
-        public static string ToHtml(string text)
-        {
-            return ToHtml(text, null);
-        }
 
-        public static string ToHtml(string text, Dictionary<string, BaseTagHandler> handlers)
-        {
-            if (text == null) return "";
-            if (text.Length == 0) return "";
-            /* register tags handlers */
-            if (handlers == null) {
-                handlers = new Dictionary<string, BaseTagHandler> {
-                    {"", new RootTag()},
-                    {"b", new SimpleTag("s")},
-                    {"i", new SimpleTag("em")},
-                    {"u", new SimpleTag("u")},
-                    {"url", new LinkTag()},
-                    {"img", new ImageTag()}
-                };
-            }
-            else {
-                if (handlers.ContainsKey("")) {
-                    handlers[""] = new RootTag();
-                }
-                else {
-                    handlers.Add("", new RootTag());
-                }
-            }
-            if (handlers.Keys.Count > 0) {
-                Token root = BuildAST(Tokenize(text));
-                string processing_result = ProcessAST(root, handlers);
-                return processing_result == null ? "" : processing_result;
-            }
-            else {
-                return EscapeHtml(text);
-            }
-        }
-
-        private static string ProcessAST(Token token, Dictionary<string, BaseTagHandler> handlers)
+        public static string ProcessAST(Token token, Dictionary<string, BaseTagHandler> handlers)
         {
             if ((token == null) || token.IsProcessed || (handlers == null)) {
                 return null;
@@ -200,7 +141,7 @@ namespace BBDiese {
                 if (child.Type == TokenType.Text) {
                     if (!child.IsProcessed) {
                         child.IsProcessed = true;
-                        content.Append(EscapeHtml(child.RawBody));
+                        content.Append(Utility.EscapeHtml(child.RawBody));
                     }
                 }
                 else {
@@ -220,9 +161,9 @@ namespace BBDiese {
                     string output = handlers[token.Tag.Name].Process(token.Tag);
                     return output;
                 }
-                return EscapeHtml(token.RawBody) +
+                return Utility.EscapeHtml(token.RawBody) +
                        token.Tag.Content +
-                       EscapeHtml(token.Pair.RawBody);
+                       Utility.EscapeHtml(token.Pair.RawBody);
             }
             else {
                 return content.ToString();
