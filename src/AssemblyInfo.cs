@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: CLSCompliant(true)]
 [assembly: AssemblyTitle("BBDiese")]
-[assembly: AssemblyDescription("BBBCode-to-HTML translator")]
+[assembly: AssemblyDescription("BBCode-to-HTML translator")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
