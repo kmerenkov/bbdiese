@@ -22,6 +22,7 @@ namespace BBDiese
                     {"b", new SimpleTag("s")},
                     {"i", new SimpleTag("em")},
                     {"u", new SimpleTag("u")},
+                    {"code", new SimpleTag("pre")},
                     {"url", new LinkTag()},
                     {"img", new ImageTag()}
                 };
