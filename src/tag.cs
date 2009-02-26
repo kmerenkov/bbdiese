@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
 
 
 namespace BBDiese
@@ -25,9 +24,7 @@ namespace BBDiese
     {
         private static char[] bad_attr_chars = new char[] {'"', ' ', '"'};
         private static char[] bad_tag_chars = new char[] {'[', ' ', ']'};
-        private static Regex re_attr = new Regex(@"(?<n>[^=]*)\s*=\s*(?<v>[^\ ]*)[\ ]?",
-                                                 RegexOptions.ExplicitCapture |
-                                                   RegexOptions.Compiled);
+
 
         static public Tag Parse(string text)
         {
@@ -39,12 +36,15 @@ namespace BBDiese
             string tag_name = "";
             bool closing = false;
             text = text.Trim(bad_tag_chars);
-            int space_idx = text.IndexOf(" ");
-            if (space_idx == -1) {
+            int separator_idx = text.IndexOf(" ");
+            if (separator_idx == -1) {
+                separator_idx = text.IndexOf("=");
+            }
+            if (separator_idx == -1) {
                 tag_name = text;
             }
             else {
-                tag_name = text.Substring(0, space_idx);
+                tag_name = text.Substring(0, separator_idx);
                 string rest = text.Substring(tag_name.Length+1);
                 if (rest.Length > 0) {
                     attributes = TagParser.ParseAttributes(rest);
@@ -66,13 +66,19 @@ namespace BBDiese
             if (text == null) {
                 return attributes;
             }
-            /* dirtiness */
-            Match m = re_attr.Match(text);
-            for (int i = 0; i < m.Groups["n"].Captures.Count; i++) {
-                string key = m.Groups["n"].Captures[i].Value.Trim(bad_attr_chars).ToLower();
-                string value = m.Groups["v"].Captures[i].Value.Trim(bad_attr_chars).ToLower();
-                attributes.Add(key, value);
+            /* In real life, I have never seen a bb tag with few attributes */
+            string[] tokens = text.Split(new char[]{'='}, 2);
+            string attr_name;
+            string attr_value;
+            if (tokens.Length < 2) {
+                attr_name = "";
+                attr_value = tokens[0];
             }
+            else {
+                attr_name = tokens[0];
+                attr_value = tokens[1];
+            }
+            attributes.Add(attr_name.Trim(bad_attr_chars), attr_value.Trim(bad_attr_chars));
             return attributes;
         }
     }

@@ -94,7 +94,7 @@ namespace BBDiese
         {
             LinkTag lt = new LinkTag();
             string bbcode = "[url src=\"http://some.url\" xxx=yyy]Click me[/url]";
-            string expected = "<a href=\"http://some.url\">Click me</a>";
+            string expected = "<a href=\"http://some.url\"%20xxx=yyy\">Click me</a>";
             string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"url", lt}
@@ -180,6 +180,23 @@ namespace BBDiese
             string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"img", it}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+    }
+
+    [TestFixture]
+    public class ColorTagTests
+    {
+        [Test]
+        public void test_normal()
+        {
+            ColorTag ct = new ColorTag();
+            string bbcode = "[color=red]foo[/color]";
+            string expected = "<span style=\"color:red;\">foo</span>";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"color", ct}
                                           });
             Assert.AreEqual(expected, actual);
         }
