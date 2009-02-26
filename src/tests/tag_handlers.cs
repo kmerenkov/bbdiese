@@ -45,6 +45,19 @@ namespace BBDiese
                                           });
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void test_attributes()
+        {
+            SimpleTag st = new SimpleTag("b", "style=\"display:none\"");
+            string bbcode = "[b]foo[/b]";
+            string expected = "<b style=\"display:none\">foo</b>";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"b", st}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
     }
 
     [TestFixture]
@@ -101,6 +114,19 @@ namespace BBDiese
                                           });
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void test_attributes()
+        {
+            LinkTag lt = new LinkTag("style=\"display:none\"");
+            string bbcode = "[url]foo[/url]";
+            string expected = "<a href=\"foo\" style=\"display:none\">foo</a>";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"url", lt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
     }
 
     [TestFixture]
@@ -145,6 +171,17 @@ namespace BBDiese
             Assert.AreEqual(expected, actual);
         }
 
-
+        [Test]
+        public void test_attributes()
+        {
+            ImageTag it = new ImageTag("style=\"display:none\"");
+            string bbcode = "[img]foo[/img]";
+            string expected = "<img src=\"foo\" style=\"display:none\">";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"img", it}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

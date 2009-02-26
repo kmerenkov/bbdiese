@@ -4,7 +4,6 @@ using System.Web; /* HttpUtility */
 
 namespace BBDiese
 {
-
     public abstract class BaseTagHandler
     {
         protected BaseTagHandler() {}
@@ -19,79 +18,6 @@ namespace BBDiese
         public override string Process(Tag tag)
         {
             return tag == null ? "" : tag.Content;
-        }
-    }
-
-    public class SimpleTag:BaseTagHandler
-    {
-        private string html_tag;
-        private BaseTagHandler nested_tag;
-
-        public SimpleTag(string html_tag):this(html_tag, null)
-        {}
-
-        public SimpleTag(string html_tag, BaseTagHandler nested_tag) {
-            this.html_tag = html_tag;
-            this.nested_tag = nested_tag;
-        }
-
-        public override string Process(Tag tag)
-        {
-            if (tag == null) return "";
-            if (this.nested_tag != null) {
-                return "<" + this.html_tag + ">" + this.nested_tag.Process(tag) + "</" + this.html_tag + ">";
-            }
-            else {
-                return "<" + this.html_tag + ">" + tag.Content + "</" + this.html_tag + ">";
-            }
-        }
-    }
-
-    public class LinkTag:BaseTagHandler
-    {
-        public LinkTag() {}
-
-        public override string Process(Tag tag)
-        {
-            if (tag == null) return "";
-
-            string content = tag.Content.Trim();
-            string src = "";
-
-            /* no content and no src */
-            if ((content.Length == 0) && (!tag.Attributes.ContainsKey("src"))) {
-                return "";
-            }
-            /* no src but content */
-            if (!tag.Attributes.ContainsKey("src")) {
-                src = content;
-            }
-            /* no content but src */
-            else {
-                src = tag.Attributes["src"];
-                if (content.Length == 0) {
-                    content = src;
-                }
-            }
-            src = HttpUtility.UrlPathEncode(src);
-            return "<a href=\"" + src + "\">" + content + "</a>";
-        }
-    }
-
-    public class ImageTag:BaseTagHandler
-    {
-        public ImageTag() {}
-
-        public override string Process(Tag tag)
-        {
-            if (tag == null) return "";
-
-            string src = tag.Content.Trim();
-            if (src.Length == 0) {
-                return src;
-            }
-            src = HttpUtility.UrlPathEncode(src);
-            return "<img src=\"" + src + "\">";
         }
     }
 }
