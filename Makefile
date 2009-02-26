@@ -1,4 +1,4 @@
-bbdiese: src/token.cs src/parser.cs src/tag.cs src/bbcode.cs src/utility.cs src/tag_handlers.cs src/AssemblyInfo.cs
+bbdiese: src/token.cs src/parser.cs src/tag.cs src/bbcode.cs src/tag_handlers.cs src/AssemblyInfo.cs
 	gmcs $? -v -t:library -O:all -r:System.Web.dll -out:bin/$@.dll
 	gmcs src/test_application.cs -r:bin/bbdiese.dll -t:exe -O:all -v -out:bin/test.exe
 

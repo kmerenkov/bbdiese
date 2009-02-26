@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Web;
 
 
 namespace BBDiese {
@@ -141,7 +142,7 @@ namespace BBDiese {
                 if (child.Type == TokenType.Text) {
                     if (!child.IsProcessed) {
                         child.IsProcessed = true;
-                        content.Append(Utility.EscapeHtml(child.RawBody));
+                        content.Append(HttpUtility.HtmlEncode(child.RawBody));
                     }
                 }
                 else {
@@ -161,9 +162,9 @@ namespace BBDiese {
                     string output = handlers[token.Tag.Name].Process(token.Tag);
                     return output;
                 }
-                return Utility.EscapeHtml(token.RawBody) +
+                return HttpUtility.HtmlEncode(token.RawBody) +
                        token.Tag.Content +
-                       Utility.EscapeHtml(token.Pair.RawBody);
+                       HttpUtility.HtmlEncode(token.Pair.RawBody);
             }
             else {
                 return content.ToString();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Web;
 
 
 namespace BBDiese
@@ -36,10 +37,10 @@ namespace BBDiese
             if (handlers.Keys.Count > 0) {
                 Token root = BBParser.BuildAST(BBParser.Tokenize(text));
                 string processing_result = BBParser.ProcessAST(root, handlers);
-                return processing_result == null ? "" : processing_result;
+                return null ?? processing_result;
             }
             else {
-                return Utility.EscapeHtml(text);
+                return HttpUtility.HtmlEncode(text);
             }
         }
 
