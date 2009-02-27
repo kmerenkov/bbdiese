@@ -49,7 +49,7 @@ namespace BBDiese
                     {"i", new SimpleTag("em")},
                     {"u", new SimpleTag("u")},
                     {"code", new SimpleTag("pre")},
-                    {"quote", new SimpleTag("blockquote", new SimpleTag("p"))},
+                    {"quote", new QuoteTag()},
                     {"url", new LinkTag()},
                     {"img", new ImageTag()}
                 };

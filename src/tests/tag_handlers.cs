@@ -201,4 +201,34 @@ namespace BBDiese
             Assert.AreEqual(expected, actual);
         }
     }
+
+    [TestFixture]
+    public class QuoteTagTests
+    {
+        [Test]
+        public void test_normal()
+        {
+            QuoteTag qt = new QuoteTag();
+            string bbcode = "[quote]foo[/quote]";
+            string expected = "<blockquote><p>foo</p></blockquote>";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"quote", qt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_with_author()
+        {
+            QuoteTag qt = new QuoteTag();
+            string bbcode = "[quote=James Bond]foo[/quote]";
+            string expected = "<p>James Bond wrote:</p><blockquote><p>foo</p></blockquote>";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"quote", qt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+    }
 }

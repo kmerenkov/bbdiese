@@ -36,14 +36,22 @@ namespace BBDiese
             string tag_name = "";
             bool closing = false;
             text = text.Trim(bad_tag_chars);
-            int separator_idx = text.IndexOf(" ");
-            if (separator_idx == -1) {
-                separator_idx = text.IndexOf("=");
-            }
-            if (separator_idx == -1) {
+            int space_idx = text.IndexOf(' ');
+            int eq_idx = text.IndexOf('=');
+            if ((space_idx == -1) && (eq_idx == -1)) { /* no attributes */
                 tag_name = text;
             }
-            else {
+            else { /* attributes */
+                int separator_idx;
+                if (space_idx == -1) { /* separated by '=' for sure */
+                    separator_idx = eq_idx;
+                }
+                else if (eq_idx == -1) { /* separated by ' ' for sure */
+                    separator_idx = space_idx;
+                }
+                else { /* separated by whatever goes first */
+                    separator_idx = Math.Min(eq_idx, space_idx);
+                }
                 tag_name = text.Substring(0, separator_idx);
                 string rest = text.Substring(tag_name.Length+1);
                 if (rest.Length > 0) {
