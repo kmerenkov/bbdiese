@@ -52,6 +52,7 @@ namespace BBDiese
                     {"quote", new QuoteTag()},
                     {"url", new LinkTag()},
                     {"email", new LinkTag(null, "mailto:")},
+                    {"size", new SizeTag()},
                     {"img", new ImageTag()}
                 };
             }

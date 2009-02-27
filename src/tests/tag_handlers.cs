@@ -226,6 +226,19 @@ namespace BBDiese
                                           });
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void test_without_value()
+        {
+            ColorTag ct = new ColorTag();
+            string bbcode = "[color]foo[/color]";
+            string expected = "foo";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"color", ct}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
     }
 
     [TestFixture]
@@ -253,6 +266,49 @@ namespace BBDiese
             string actual = BBCode.ToHtml(bbcode,
                                           new Dictionary<string, BaseTagHandler> {
                                               {"quote", qt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+    }
+
+    [TestFixture]
+    public class SizeTagTests
+    {
+        [Test]
+        public void test_normal()
+        {
+            SizeTag st = new SizeTag();
+            string bbcode = "[size=12]foo[/size]";
+            string expected = "<span style=\"font-size:12pt;\">foo</span>";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"size", st}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_without_value()
+        {
+            SizeTag st = new SizeTag();
+            string bbcode = "[size]foo[/size]";
+            string expected = "foo";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"size", st}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_wrong_value()
+        {
+            SizeTag st = new SizeTag();
+            string bbcode = "[size=foo]bar[/size]";
+            string expected = "bar";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"size", st}
                                           });
             Assert.AreEqual(expected, actual);
         }
