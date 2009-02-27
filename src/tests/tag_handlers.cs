@@ -127,6 +127,32 @@ namespace BBDiese
                                           });
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void test_prefix_without_src()
+        {
+            LinkTag lt = new LinkTag(null, "mailto:");
+            string bbcode = "[email]foo[/email]";
+            string expected = "<a href=\"mailto:foo\">foo</a>";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"email", lt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void test_prefix_with_src()
+        {
+            LinkTag lt = new LinkTag(null, "mailto:");
+            string bbcode = "[email src=foo]bar[/email]";
+            string expected = "<a href=\"mailto:foo\">bar</a>";
+            string actual = BBCode.ToHtml(bbcode,
+                                          new Dictionary<string, BaseTagHandler> {
+                                              {"email", lt}
+                                          });
+            Assert.AreEqual(expected, actual);
+        }
     }
 
     [TestFixture]

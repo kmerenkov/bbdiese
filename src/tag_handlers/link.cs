@@ -6,11 +6,16 @@ namespace BBDiese
     public class LinkTag:BaseTagHandler
     {
         private string attributes;
+        private string url_prefix;
 
-        public LinkTag():this(null) {}
+        public LinkTag():this(null, null) {}
 
-        public LinkTag(string attributes) {
+        public LinkTag(string attributes):this(attributes, null) {}
+
+        public LinkTag(string attributes, string url_prefix) {
             this.attributes = attributes ?? "";
+            this.url_prefix = url_prefix ?? ""; /* if, for example, you want to prefix
+                                                   all urls to redirect them then */
         }
 
         public override string Process(Tag tag)
@@ -34,6 +39,9 @@ namespace BBDiese
                 if (content.Length == 0) {
                     content = src;
                 }
+            }
+            if (this.url_prefix.Length > 0) {
+                src = this.url_prefix + src;
             }
             src = HttpUtility.UrlPathEncode(src);
             string prefix;

@@ -51,6 +51,7 @@ namespace BBDiese
                     {"code", new SimpleTag("pre")},
                     {"quote", new QuoteTag()},
                     {"url", new LinkTag()},
+                    {"email", new LinkTag(null, "mailto:")},
                     {"img", new ImageTag()}
                 };
             }
