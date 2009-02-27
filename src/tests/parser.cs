@@ -19,7 +19,7 @@ namespace BBDiese
         public void test_one_tag()
         {
             string bbcode = "[b]foo[/b]";
-            string expected = "<s>foo</s>";
+            string expected = "<b>foo</b>";
             string actual = BBCode.ToHtml(bbcode);
             Assert.AreEqual(expected, actual);
         }
@@ -28,7 +28,7 @@ namespace BBDiese
         public void test_one_tag_with_text_around()
         {
             string bbcode = "foo[b]bar[/b]zar";
-            string expected = "foo<s>bar</s>zar";
+            string expected = "foo<b>bar</b>zar";
             string actual = BBCode.ToHtml(bbcode);
             Assert.AreEqual(expected, actual);
         }
@@ -55,7 +55,7 @@ namespace BBDiese
         public void test_overlapping_tags()
         {
             string bbcode = "[b]foo[i]bar[/b]zar[/i]";
-            string expected = "<s>foo<em>barzar</em></s>";
+            string expected = "<b>foo<em>barzar</em></b>";
             string actual = BBCode.ToHtml(bbcode);
             Assert.AreEqual(expected, actual);
         }
@@ -91,7 +91,7 @@ namespace BBDiese
         public void test_tag_with_whitespaces_around()
         {
             string bbcode = "   [b]aaa[/b]  ";
-            string expected = "   <s>aaa</s>  ";
+            string expected = "   <b>aaa</b>  ";
             string actual = BBCode.ToHtml(bbcode);
             Assert.AreEqual(expected, actual);
         }
@@ -118,7 +118,7 @@ namespace BBDiese
         public void test_opening_brace()
         {
             string bbcode = "[foo[b]bar[/b]";
-            string expected = "[foo<s>bar</s>";
+            string expected = "[foo<b>bar</b>";
             string actual = BBCode.ToHtml(bbcode);
             Assert.AreEqual(expected, actual);
         }
@@ -127,7 +127,7 @@ namespace BBDiese
         public void test_closing_brace()
         {
             string bbcode = "f]oo[b]bar[/b]";
-            string expected = "f]oo<s>bar</s>";
+            string expected = "f]oo<b>bar</b>";
             string actual = BBCode.ToHtml(bbcode);
             Assert.AreEqual(expected, actual);
         }
@@ -145,7 +145,7 @@ namespace BBDiese
         public void test_stress_braces()
         {
             string bbcode = "[[[[[[b]foo[/b]]]]]]";
-            string expected = "[[[[[<s>foo</s>]]]]]";
+            string expected = "[[[[[<b>foo</b>]]]]]";
             string actual = BBCode.ToHtml(bbcode);
             Assert.AreEqual(expected, actual);
         }

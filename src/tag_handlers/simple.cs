@@ -6,14 +6,11 @@ namespace BBDiese
         private string attributes;
         private BaseTagHandler nested_tag;
 
-        public SimpleTag(string html_tag):this(html_tag, "", null)
-        {}
+        public SimpleTag(string html_tag):this(html_tag, "", null) {}
 
-        public SimpleTag(string html_tag, string attributes):this(html_tag, attributes, null)
-        {}
+        public SimpleTag(string html_tag, string attributes):this(html_tag, attributes, null) {}
 
-        public SimpleTag(string html_tag, SimpleTag nested_tag):this(html_tag, "", nested_tag)
-        {}
+        public SimpleTag(string html_tag, SimpleTag nested_tag):this(html_tag, "", nested_tag) {}
 
         public SimpleTag(string html_tag, string attributes, SimpleTag nested_tag) {
             this.HtmlTag = html_tag;

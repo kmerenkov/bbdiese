@@ -1,11 +1,36 @@
 using System.Collections.Generic;
+using System.Text;
 using System.Web;
 
 
 namespace BBDiese
 {
+    sealed internal class Map
+    {
+        public string Text {get;set;}
+        public string Replacement {get;set;}
+
+        public Map(string text, string replacement) {
+            this.Text = text;
+            this.Replacement = replacement;
+        }
+    }
+
     public static class BBCode
     {
+        private static List<Map> smileys = new List<Map> {
+            new Map("[:-)]", "<img src=\"smile.gif\">")
+        };
+
+        private static string ProcessSmileys(string text)
+        {
+            StringBuilder output = new StringBuilder(text);
+            foreach (Map m in smileys) {
+                output.Replace(m.Text, m.Replacement);
+            }
+            return output.ToString();
+        }
+
         public static string ToHtml(string text)
         {
             return ToHtml(text, null);
@@ -19,7 +44,8 @@ namespace BBDiese
             if (handlers == null) {
                 handlers = new Dictionary<string, BaseTagHandler> {
                     {"", new RootTag()},
-                    {"b", new SimpleTag("s")},
+                    {"b", new SimpleTag("b")},
+                    {"s", new SimpleTag("s")},
                     {"i", new SimpleTag("em")},
                     {"u", new SimpleTag("u")},
                     {"code", new SimpleTag("pre")},
@@ -39,10 +65,10 @@ namespace BBDiese
             if (handlers.Keys.Count > 0) {
                 Token root = BBParser.BuildAST(BBParser.Tokenize(text));
                 string processing_result = BBParser.ProcessAST(root, handlers);
-                return null ?? processing_result;
+                return null ?? ProcessSmileys(processing_result);
             }
             else {
-                return HttpUtility.HtmlEncode(text);
+                return ProcessSmileys(HttpUtility.HtmlEncode(text));
             }
         }
 
