@@ -9,3 +9,19 @@ The code is in the Public Domain. See the LICENSE file for more details.
     search+replace scripts.
  -- BBDiese builds an AST (Abstract Syntax Tree), ensuring that
     supplied bbcode is correct (no overlapping) along with produced html.
+
+==== TAG MATRIX SUPPORT ====
+Tag            Supports?
+------------------------
+[color]        Yes
+[s]            Yes
+[b]            Yes
+[i]            Yes
+[u]            Yes
+[code]         Yes
+[quote]        Yes
+[url]          Yes
+[img]          Yes
+Smileys        Yes
+[link]         No
+[size]         No
